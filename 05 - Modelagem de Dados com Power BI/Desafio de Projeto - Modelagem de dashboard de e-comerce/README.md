@@ -67,25 +67,7 @@ A tabela seguinte mostra as colunas do dataset original e os repectivos tipos de
 
 Considerando as definições acerca do modelo em esquema estrela, optou-se por uma estrutura levemente diferente do proposto na [descrição do desafio](./00-docs/Descrição%20%20do%20Desafio%20-%20Modelagem%20e%20Transformação%20de%20dados%20com%20DAX%20com%20Power%20BI.pdf). 
 
-### Tabela de Fatos
 
-A **Tabela de Fatos** `f_Vendas` foi criada com a seguinte estrutura, a fim de representar os eventos relacionados às vendas:
-
-| Campo | Tipo de Dado | Chave |
-| :--- | :--- | :--- |
-| `ID_Venda` | Número Inteiro | PK |
-| `ID_Produto` | Número Inteiro | FK |
-| `ID_Pais` | Número Inteiro | FK |
-| `ID_Segmento` | Número Inteiro | FK |
-| `ID_Faixa_Desconto` | Número Inteiro | FK |
-| `Data` | Data | FK |
-| `Unidades_Vendidas` | Número Inteiro | |
-| `Preco_Venda` | Número decimal fixo | |
-| `Vendas_Brutas` | Número decimal fixo | |
-| `Descontos` | Número decimal fixo | |
-| `Vendas_Liquidas` | Número decimal fixo | |
-| `COGS` | Número decimal fixo | |
-| `Lucro` | Número decimal fixo | |
 
 ### Tabelas de Dimensão
 
@@ -98,11 +80,41 @@ A tabela `d_Calendario` foi criada via código DAX
 
 #### Dimensão Segmento
 
+O Código detalha as Etapas Aplicadas no Editor Power Query:
+
+```powerquery
+let
+    Fonte = Excel.Workbook(File.Contents("D:\Projetos\Github\costandrad\DIO\universia-primeiros-passos-com-power-bi\05 - Modelagem de Dados com Power BI\Desafio de Projeto - Modelagem de dashboard de e-comerce\01-database\Financial Sample.xlsx"), null, true),
+    financials_Table = Fonte{[Item="financials",Kind="Table"]}[Data],
+    #"Tipo Alterado" = Table.TransformColumnTypes(financials_Table,{{"Segment", type text}, {"Country", type text}, {"Product", type text}, {"Discount Band", type text}, {"Units Sold", type number}, {"Manufacturing Price", Int64.Type}, {"Sale Price", Int64.Type}, {"Gross Sales", type number}, {"Discounts", type number}, {" Sales", type number}, {"COGS", type number}, {"Profit", type number}, {"Date", type date}, {"Month Number", Int64.Type}, {"Month Name", type text}, {"Year", Int64.Type}}),
+    #"Outras Colunas Removidas" = Table.SelectColumns(#"Tipo Alterado",{"Segment"}),
+    #"Duplicatas Removidas" = Table.Distinct(#"Outras Colunas Removidas"),
+    #"Índice Adicionado" = Table.AddIndexColumn(#"Duplicatas Removidas", "Índice", 1, 1, Int64.Type),
+    #"Colunas Reordenadas" = Table.ReorderColumns(#"Índice Adicionado",{"Índice", "Segment"}),
+    #"Colunas Renomeadas" = Table.RenameColumns(#"Colunas Reordenadas",{{"Índice", "ID_Segmento"}})
+in
+    #"Colunas Renomeadas"
+```
+
+O resulado foi o seguinte:
+
+<div style="max-width: 500px; font-family: sans-serif; text-align: center">
+  <figcaption>Tabela d_Segmento</figcaption>
+  <img src="./02-assets/d_Segmento.png" alt="Design de modelo de esquema em estrel" style="width: 100%; border-radius: 4px;">
+  <small style="display: block; text-align: left; color: #666; margin-top: 5px;">
+    Fonte: <a href="https://learn.microsoft.com/pt-br/power-bi/guidance/star-schema">Autor</a>
+  </small>
+</div>
+
+
 
 | Campo | Tipo de Dado | Chave |
 | :--- | :--- | :--- |
 | `ID_Segmento` | Número Inteiro | PK |
 | `Segmento` | Texto | |
+
+
+
 
 #### Dimensão Geografia
 
@@ -137,7 +149,35 @@ A tabela `d_Calendario` foi criada via código DAX
 | `Nome_Mes` | Texto | |
 
 
+### Tabela de Fatos
 
+A **Tabela de Fatos** `f_Vendas` foi criada com a seguinte estrutura, a fim de representar os eventos relacionados às vendas:
+
+| Campo | Tipo de Dado | Chave |
+| :--- | :--- | :--- |
+| `ID_Venda` | Número Inteiro | PK |
+| `ID_Produto` | Número Inteiro | FK |
+| `ID_Pais` | Número Inteiro | FK |
+| `ID_Segmento` | Número Inteiro | FK |
+| `ID_Faixa_Desconto` | Número Inteiro | FK |
+| `Data` | Data | FK |
+| `Unidades_Vendidas` | Número Inteiro | |
+| `Preco_Venda` | Número decimal fixo | |
+| `Vendas_Brutas` | Número decimal fixo | |
+| `Descontos` | Número decimal fixo | |
+| `Vendas_Liquidas` | Número decimal fixo | |
+| `COGS` | Número decimal fixo | |
+| `Lucro` | Número decimal fixo | |
+
+Construção da Tabela Fato (`f_Vendas`):
+
+1. Criação da Base: A partir da tabela original (`financials`), gerou-se a consulta `f_Vendas` .
+
+2. Mesclagem de Consultas (Merge): Para cada dimensão (`d_Segmento`, `d_Geografia`, `d_Produto`, `d_Faixa_Desconto`), realizou-se a junção com a tabela fato utilizando a coluna de atributo correspondente (ex.: `Segment` com `Segment`).
+
+3. Expansão das Chaves: De cada tabela mesclada, expandiu-se apenas a coluna do ID correspondente (`ID_Segmento`, `ID_Pais`, `ID_Produto`, `ID_Faixa_Desconto`).
+
+4. Limpeza e Otimização: As colunas textuais originais foram removidas, garantindo que a tabela fato armazene apenas as Chaves Estrangeiras (FK) e as colunas numéricas/fatos (vendas, custos, unidades, lucro).
 
 
 
