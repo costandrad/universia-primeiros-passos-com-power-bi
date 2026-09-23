@@ -98,7 +98,7 @@ in
 
 O resulado foi o seguinte:
 
-<div style="max-width: 500px; font-family: sans-serif; text-align: center">
+<div style="max-width: 300px; font-family: sans-serif; text-align: center">
   <figcaption>Tabela d_Segmento</figcaption>
   <img src="./02-assets/d_Segmento.png" alt="Design de modelo de esquema em estrel" style="width: 100%; border-radius: 4px;">
   <small style="display: block; text-align: left; color: #666; margin-top: 5px;">
@@ -175,7 +175,23 @@ Construção da Tabela Fato (`f_Vendas`):
 
 2. Mesclagem de Consultas (Merge): Para cada dimensão (`d_Segmento`, `d_Geografia`, `d_Produto`, `d_Faixa_Desconto`), realizou-se a junção com a tabela fato utilizando a coluna de atributo correspondente (ex.: `Segment` com `Segment`).
 
+<div style="max-width: 600px; font-family: sans-serif; text-align: center">
+  <figcaption>Mesclagem de consultas da tabela d_Segmento</figcaption>
+  <img src="./02-assets/d_Segmento_merge.png" alt="Mesclagem de consultas da tabela d_Segmento" style="width: 100%; border-radius: 4px;">
+  <small style="display: block; text-align: left; color: #666; margin-top: 5px;">
+    Fonte: <a href="https://learn.microsoft.com/pt-br/power-bi/guidance/star-schema">Autor</a>
+  </small>
+</div>
+
 3. Expansão das Chaves: De cada tabela mesclada, expandiu-se apenas a coluna do ID correspondente (`ID_Segmento`, `ID_Pais`, `ID_Produto`, `ID_Faixa_Desconto`).
+
+<div style="max-width: 300px; font-family: sans-serif; text-align: center">
+  <figcaption>Expansão de chaves da tabela d_Segmento para f_Vendas</figcaption>
+  <img src="./02-assets/d_Segmento_expand.png" alt="Expansão de chaves da tabela d_Segmento para f_Vendas" style="width: 100%; border-radius: 4px;">
+  <small style="display: block; text-align: left; color: #666; margin-top: 5px;">
+    Fonte: <a href="https://learn.microsoft.com/pt-br/power-bi/guidance/star-schema">Autor</a>
+  </small>
+</div>
 
 4. Limpeza e Otimização: As colunas textuais originais foram removidas, garantindo que a tabela fato armazene apenas as Chaves Estrangeiras (FK) e as colunas numéricas/fatos (vendas, custos, unidades, lucro).
 
