@@ -102,7 +102,7 @@ O resulado foi o seguinte:
   <figcaption>Tabela d_Segmento</figcaption>
   <img src="./02-assets/d_Segmento.png" alt="Design de modelo de esquema em estrel" style="width: 100%; border-radius: 4px;">
   <small style="display: block; text-align: left; color: #666; margin-top: 5px;">
-    Fonte: <a href="https://learn.microsoft.com/pt-br/power-bi/guidance/star-schema">Autor</a>
+    Fonte: Autor
   </small>
 </div>
 
@@ -147,7 +147,7 @@ O resulado foi o seguinte:
   <figcaption>Tabela d_Geografia</figcaption>
   <img src="./02-assets/d_Geografia.png" alt="Tabela d_Geografia" style="width: 100%; border-radius: 4px;">
   <small style="display: block; text-align: left; color: #666; margin-top: 5px;">
-    Fonte: <a href="https://learn.microsoft.com/pt-br/power-bi/guidance/star-schema">Autor</a>
+    Fonte: Autor
   </small>
 </div>
 
@@ -166,11 +166,11 @@ let
     Fonte = Excel.Workbook(File.Contents("D:\Projetos\Github\costandrad\DIO\universia-primeiros-passos-com-power-bi\05 - Modelagem de Dados com Power BI\Desafio de Projeto - Modelagem de dashboard de e-comerce\01-database\Financial Sample.xlsx"), null, true),
     financials_Table = Fonte{[Item="financials",Kind="Table"]}[Data],
     #"Tipo Alterado" = Table.TransformColumnTypes(financials_Table,{{"Segment", type text}, {"Country", type text}, {"Product", type text}, {"Discount Band", type text}, {"Units Sold", type number}, {"Manufacturing Price", Int64.Type}, {"Sale Price", Int64.Type}, {"Gross Sales", type number}, {"Discounts", type number}, {" Sales", type number}, {"COGS", type number}, {"Profit", type number}, {"Date", type date}, {"Month Number", Int64.Type}, {"Month Name", type text}, {"Year", Int64.Type}}),
-    #"Outras Colunas Removidas" = Table.SelectColumns(#"Tipo Alterado",{"Product"}),
-    #"Duplicatas Removidas" = Table.Distinct(#"Outras Colunas Removidas"),
+    #"Outras Colunas Removidas" = Table.SelectColumns(#"Tipo Alterado",{"Product", "Manufacturing Price"}),
+    #"Duplicatas Removidas" = Table.Distinct(#"Outras Colunas Removidas", {"Product"}),
     #"Índice Adicionado" = Table.AddIndexColumn(#"Duplicatas Removidas", "Índice", 1, 1, Int64.Type),
     #"Colunas Renomeadas" = Table.RenameColumns(#"Índice Adicionado",{{"Índice", "ID_Produto"}}),
-    #"Colunas Reordenadas" = Table.ReorderColumns(#"Colunas Renomeadas",{"ID_Produto", "Product"})
+    #"Colunas Reordenadas" = Table.ReorderColumns(#"Colunas Renomeadas",{"ID_Produto", "Product", "Manufacturing Price"})
 in
     #"Colunas Reordenadas"
 ```
@@ -182,7 +182,7 @@ O resulado foi o seguinte:
   <figcaption>Tabela d_Produto</figcaption>
   <img src="./02-assets/d_Produto.png" alt="Tabela d_Produto" style="width: 100%; border-radius: 4px;">
   <small style="display: block; text-align: left; color: #666; margin-top: 5px;">
-    Fonte: <a href="https://learn.microsoft.com/pt-br/power-bi/guidance/star-schema">Autor</a>
+    Fonte: Autor
   </small>
 </div>
 
@@ -217,7 +217,7 @@ O resulado foi o seguinte:
   <figcaption>Tabela d_Faixa_Desconto</figcaption>
   <img src="./02-assets/d_Faixa_Desconto.png" alt="Tabela d_Faixa_Desconto" style="width: 100%; border-radius: 4px;">
   <small style="display: block; text-align: left; color: #666; margin-top: 5px;">
-    Fonte: <a href="https://learn.microsoft.com/pt-br/power-bi/guidance/star-schema">Autor</a>
+    Fonte: Autor
   </small>
 </div>
 
@@ -225,10 +225,21 @@ O resulado foi o seguinte:
 
 | Campo | Tipo de Dado | Chave |
 | :--- | :--- | :--- |
-| `Data` | Data | PK |
-| `Ano` | Número Inteiro | |
-| `Numero_Mes` | Número Inteiro | |
-| `Nome_Mes` | Texto | |
+| `Date` | Data | PK |
+| `Year` | Número Inteiro | |
+| `Month Number` | Número Inteiro | |
+| `Month` | Texto | |
+| `Quarter` | Número Inteiro | |
+
+
+A tabela `d_Calendario` foi criada via DAX para gerenciar a inteligência temporal (*Time Intelligence*) do modelo:
+
+- **`d_Calendario = CALENDARAUTO()`**: Gera uma tabela calculada com um intervalo contínuo de datas com base nas datas existentes no modelo. A partir da coluna `Date` criada automaticamente na tabela `d_Calendario`, foram criadas as seguintes colunas:
+
+  1. **`Year = d_Calendario[Date].[Ano]`**: Extrai o ano (ex.: `2013`, `2014`).
+  2. **`Month Number = d_Calendario[Date].[MonthNo]`**: Extrai o número do mês (`1` a `12`) para ordenação cronológica.
+  3. **`Month = d_Calendario[Date].[Mês]`**: Extrai o nome por extenso do mês (ex.: `Janeiro`).
+  4. **`Quarter = d_Calendario[Date].[QuarterNo]`**: Extrai o número do trimestre (`1` a `4`).
 
 
 ### Tabela de Fatos
@@ -261,7 +272,7 @@ Construção da Tabela Fato (`f_Vendas`):
   <figcaption>Mesclagem de consultas da tabela d_Segmento</figcaption>
   <img src="./02-assets/d_Segmento_merge.png" alt="Mesclagem de consultas da tabela d_Segmento" style="width: 100%; border-radius: 4px;">
   <small style="display: block; text-align: left; color: #666; margin-top: 5px;">
-    Fonte: <a href="https://learn.microsoft.com/pt-br/power-bi/guidance/star-schema">Autor</a>
+    Fonte: Autor
   </small>
 </div>
 
@@ -271,11 +282,22 @@ Construção da Tabela Fato (`f_Vendas`):
   <figcaption>Expansão de chaves da tabela d_Segmento para f_Vendas</figcaption>
   <img src="./02-assets/d_Segmento_expand.png" alt="Expansão de chaves da tabela d_Segmento para f_Vendas" style="width: 100%; border-radius: 4px;">
   <small style="display: block; text-align: left; color: #666; margin-top: 5px;">
-    Fonte: <a href="https://learn.microsoft.com/pt-br/power-bi/guidance/star-schema">Autor</a>
+    Fonte: Autor
   </small>
 </div>
 
 4. Limpeza e Otimização: As colunas textuais originais foram removidas, garantindo que a tabela fato armazene apenas as Chaves Estrangeiras (FK) e as colunas numéricas/fatos (vendas, custos, unidades, lucro).
+
+
+O Modelo Esquema em Estrela resultante é mostrado na figura abaixo:
+
+<div style="max-width: 600px; font-family: sans-serif; text-align: center">
+  <figcaption>Modelo Star Schema para Financials Sample</figcaption>
+  <img src="./02-assets/star_schema_financials.png" alt="Modelo Star Schema para Financials Sample" style="width: 100%; border-radius: 4px;">
+  <small style="display: block; text-align: left; color: #666; margin-top: 5px;">
+    Fonte: Autor
+  </small>
+</div>
 
 
 
