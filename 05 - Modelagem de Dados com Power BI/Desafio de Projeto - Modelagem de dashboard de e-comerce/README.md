@@ -80,6 +80,12 @@ A tabela `d_Calendario` foi criada via código DAX
 
 #### Dimensão Segmento
 
+
+| Campo | Tipo de Dado | Chave |
+| :--- | :--- | :--- |
+| `ID_Segmento` | Número Inteiro | PK |
+| `Segment` | Texto | |
+
 O Código detalha as Etapas Aplicadas no Editor Power Query:
 
 ```powerquery
@@ -108,10 +114,6 @@ O resulado foi o seguinte:
 
 
 
-| Campo | Tipo de Dado | Chave |
-| :--- | :--- | :--- |
-| `ID_Segmento` | Número Inteiro | PK |
-| `Segmento` | Texto | |
 
 
 
@@ -121,7 +123,7 @@ O resulado foi o seguinte:
 | Campo | Tipo de Dado | Chave |
 | :--- | :--- | :--- |
 | `ID_Pais` | Número Inteiro | PK |
-| `Pais` | Texto | |
+| `Country` | Texto | |
 
 
 O Código detalha as Etapas Aplicadas no Editor Power Query:
@@ -156,8 +158,8 @@ O resulado foi o seguinte:
 | Campo | Tipo de Dado | Chave |
 | :--- | :--- | :--- |
 | `ID_Produto` | Número Inteiro | PK |
-| `Nome_Produto` | Texto | |
-| `Preco_Fabricacao_Padrao` | Número decimal fixo | |
+| `Product` | Texto | |
+| `Manufacturing Price` | Número decimal fixo | |
 
 O Código detalha as Etapas Aplicadas no Editor Power Query:
 
@@ -192,7 +194,7 @@ O resulado foi o seguinte:
 | Campo | Tipo de Dado | Chave |
 | :--- | :--- | :--- |
 | `ID_Faixa_Desconto` | Número Inteiro | PK |
-| `Faixa_Desconto` | Texto | |
+| `Discount Band` | Texto | |
 
 O Código detalha as Etapas Aplicadas no Editor Power Query:
 
