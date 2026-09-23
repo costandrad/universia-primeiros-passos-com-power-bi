@@ -123,6 +123,34 @@ O resulado foi o seguinte:
 | `ID_Pais` | Número Inteiro | PK |
 | `Pais` | Texto | |
 
+
+O Código detalha as Etapas Aplicadas no Editor Power Query:
+
+
+```powerquery
+let
+    Fonte = Excel.Workbook(File.Contents("D:\Projetos\Github\costandrad\DIO\universia-primeiros-passos-com-power-bi\05 - Modelagem de Dados com Power BI\Desafio de Projeto - Modelagem de dashboard de e-comerce\01-database\Financial Sample.xlsx"), null, true),
+    financials_Table = Fonte{[Item="financials",Kind="Table"]}[Data],
+    #"Tipo Alterado" = Table.TransformColumnTypes(financials_Table,{{"Segment", type text}, {"Country", type text}, {"Product", type text}, {"Discount Band", type text}, {"Units Sold", type number}, {"Manufacturing Price", Int64.Type}, {"Sale Price", Int64.Type}, {"Gross Sales", type number}, {"Discounts", type number}, {" Sales", type number}, {"COGS", type number}, {"Profit", type number}, {"Date", type date}, {"Month Number", Int64.Type}, {"Month Name", type text}, {"Year", Int64.Type}}),
+    #"Outras Colunas Removidas" = Table.SelectColumns(#"Tipo Alterado",{"Country"}),
+    #"Duplicatas Removidas" = Table.Distinct(#"Outras Colunas Removidas"),
+    #"Índice Adicionado" = Table.AddIndexColumn(#"Duplicatas Removidas", "Índice", 1, 1, Int64.Type),
+    #"Colunas Renomeadas" = Table.RenameColumns(#"Índice Adicionado",{{"Índice", "ID_Pais"}}),
+    #"Colunas Reordenadas" = Table.ReorderColumns(#"Colunas Renomeadas",{"ID_Pais", "Country"})
+in
+    #"Colunas Reordenadas"
+```
+
+O resulado foi o seguinte:
+
+<div style="max-width: 300px; font-family: sans-serif; text-align: center">
+  <figcaption>Tabela d_Geografia</figcaption>
+  <img src="./02-assets/d_Geografia.png" alt="Tabela d_Geografia" style="width: 100%; border-radius: 4px;">
+  <small style="display: block; text-align: left; color: #666; margin-top: 5px;">
+    Fonte: <a href="https://learn.microsoft.com/pt-br/power-bi/guidance/star-schema">Autor</a>
+  </small>
+</div>
+
 #### Dimensão Produto
 
 | Campo | Tipo de Dado | Chave |
@@ -130,6 +158,33 @@ O resulado foi o seguinte:
 | `ID_Produto` | Número Inteiro | PK |
 | `Nome_Produto` | Texto | |
 | `Preco_Fabricacao_Padrao` | Número decimal fixo | |
+
+O Código detalha as Etapas Aplicadas no Editor Power Query:
+
+```powerquery
+let
+    Fonte = Excel.Workbook(File.Contents("D:\Projetos\Github\costandrad\DIO\universia-primeiros-passos-com-power-bi\05 - Modelagem de Dados com Power BI\Desafio de Projeto - Modelagem de dashboard de e-comerce\01-database\Financial Sample.xlsx"), null, true),
+    financials_Table = Fonte{[Item="financials",Kind="Table"]}[Data],
+    #"Tipo Alterado" = Table.TransformColumnTypes(financials_Table,{{"Segment", type text}, {"Country", type text}, {"Product", type text}, {"Discount Band", type text}, {"Units Sold", type number}, {"Manufacturing Price", Int64.Type}, {"Sale Price", Int64.Type}, {"Gross Sales", type number}, {"Discounts", type number}, {" Sales", type number}, {"COGS", type number}, {"Profit", type number}, {"Date", type date}, {"Month Number", Int64.Type}, {"Month Name", type text}, {"Year", Int64.Type}}),
+    #"Outras Colunas Removidas" = Table.SelectColumns(#"Tipo Alterado",{"Product"}),
+    #"Duplicatas Removidas" = Table.Distinct(#"Outras Colunas Removidas"),
+    #"Índice Adicionado" = Table.AddIndexColumn(#"Duplicatas Removidas", "Índice", 1, 1, Int64.Type),
+    #"Colunas Renomeadas" = Table.RenameColumns(#"Índice Adicionado",{{"Índice", "ID_Produto"}}),
+    #"Colunas Reordenadas" = Table.ReorderColumns(#"Colunas Renomeadas",{"ID_Produto", "Product"})
+in
+    #"Colunas Reordenadas"
+```
+
+
+O resulado foi o seguinte:
+
+<div style="max-width: 300px; font-family: sans-serif; text-align: center">
+  <figcaption>Tabela d_Produto</figcaption>
+  <img src="./02-assets/d_Produto.png" alt="Tabela d_Produto" style="width: 100%; border-radius: 4px;">
+  <small style="display: block; text-align: left; color: #666; margin-top: 5px;">
+    Fonte: <a href="https://learn.microsoft.com/pt-br/power-bi/guidance/star-schema">Autor</a>
+  </small>
+</div>
 
 
 #### Dimensão Faixa de Desconto
