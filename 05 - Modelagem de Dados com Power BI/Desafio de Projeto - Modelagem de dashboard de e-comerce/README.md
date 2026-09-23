@@ -194,6 +194,33 @@ O resulado foi o seguinte:
 | `ID_Faixa_Desconto` | Número Inteiro | PK |
 | `Faixa_Desconto` | Texto | |
 
+O Código detalha as Etapas Aplicadas no Editor Power Query:
+
+
+```powerquery
+let
+    Fonte = Excel.Workbook(File.Contents("D:\Projetos\Github\costandrad\DIO\universia-primeiros-passos-com-power-bi\05 - Modelagem de Dados com Power BI\Desafio de Projeto - Modelagem de dashboard de e-comerce\01-database\Financial Sample.xlsx"), null, true),
+    financials_Table = Fonte{[Item="financials",Kind="Table"]}[Data],
+    #"Tipo Alterado" = Table.TransformColumnTypes(financials_Table,{{"Segment", type text}, {"Country", type text}, {"Product", type text}, {"Discount Band", type text}, {"Units Sold", type number}, {"Manufacturing Price", Int64.Type}, {"Sale Price", Int64.Type}, {"Gross Sales", type number}, {"Discounts", type number}, {" Sales", type number}, {"COGS", type number}, {"Profit", type number}, {"Date", type date}, {"Month Number", Int64.Type}, {"Month Name", type text}, {"Year", Int64.Type}}),
+    #"Outras Colunas Removidas" = Table.SelectColumns(#"Tipo Alterado",{"Discount Band"}),
+    #"Duplicatas Removidas" = Table.Distinct(#"Outras Colunas Removidas"),
+    #"Índice Adicionado" = Table.AddIndexColumn(#"Duplicatas Removidas", "Índice", 1, 1, Int64.Type),
+    #"Colunas Renomeadas" = Table.RenameColumns(#"Índice Adicionado",{{"Índice", "ID_Faixa_Desconto"}}),
+    #"Colunas Reordenadas" = Table.ReorderColumns(#"Colunas Renomeadas",{"ID_Faixa_Desconto", "Discount Band"})
+in
+    #"Colunas Reordenadas"
+```
+
+O resulado foi o seguinte:
+
+<div style="max-width: 300px; font-family: sans-serif; text-align: center">
+  <figcaption>Tabela d_Faixa_Desconto</figcaption>
+  <img src="./02-assets/d_Faixa_Desconto.png" alt="Tabela d_Faixa_Desconto" style="width: 100%; border-radius: 4px;">
+  <small style="display: block; text-align: left; color: #666; margin-top: 5px;">
+    Fonte: <a href="https://learn.microsoft.com/pt-br/power-bi/guidance/star-schema">Autor</a>
+  </small>
+</div>
+
 #### Dimensão Calenário
 
 | Campo | Tipo de Dado | Chave |
