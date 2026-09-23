@@ -90,7 +90,7 @@ O Código detalha as Etapas Aplicadas no Editor Power Query:
 
 ```powerquery
 let
-    Fonte = Excel.Workbook(File.Contents("D:\Projetos\Github\costandrad\DIO\universia-primeiros-passos-com-power-bi\05 - Modelagem de Dados com Power BI\Desafio de Projeto - Modelagem de dashboard de e-comerce\01-database\Financial Sample.xlsx"), null, true),
+    Fonte = Excel.Workbook(Web.Contents("https://github.com/costandrad/universia-primeiros-passos-com-power-bi/raw/refs/heads/main/05%20-%20Modelagem%20de%20Dados%20com%20Power%20BI/Desafio%20de%20Projeto%20-%20Modelagem%20de%20dashboard%20de%20e-comerce/01-database/Financial%20Sample.xlsx"), null, true),
     financials_Table = Fonte{[Item="financials",Kind="Table"]}[Data],
     #"Tipo Alterado" = Table.TransformColumnTypes(financials_Table,{{"Segment", type text}, {"Country", type text}, {"Product", type text}, {"Discount Band", type text}, {"Units Sold", type number}, {"Manufacturing Price", Int64.Type}, {"Sale Price", Int64.Type}, {"Gross Sales", type number}, {"Discounts", type number}, {" Sales", type number}, {"COGS", type number}, {"Profit", type number}, {"Date", type date}, {"Month Number", Int64.Type}, {"Month Name", type text}, {"Year", Int64.Type}}),
     #"Outras Colunas Removidas" = Table.SelectColumns(#"Tipo Alterado",{"Segment"}),
@@ -131,7 +131,7 @@ O Código detalha as Etapas Aplicadas no Editor Power Query:
 
 ```powerquery
 let
-    Fonte = Excel.Workbook(File.Contents("D:\Projetos\Github\costandrad\DIO\universia-primeiros-passos-com-power-bi\05 - Modelagem de Dados com Power BI\Desafio de Projeto - Modelagem de dashboard de e-comerce\01-database\Financial Sample.xlsx"), null, true),
+    Fonte = Excel.Workbook(Web.Contents("https://github.com/costandrad/universia-primeiros-passos-com-power-bi/raw/refs/heads/main/05%20-%20Modelagem%20de%20Dados%20com%20Power%20BI/Desafio%20de%20Projeto%20-%20Modelagem%20de%20dashboard%20de%20e-comerce/01-database/Financial%20Sample.xlsx"), null, true),
     financials_Table = Fonte{[Item="financials",Kind="Table"]}[Data],
     #"Tipo Alterado" = Table.TransformColumnTypes(financials_Table,{{"Segment", type text}, {"Country", type text}, {"Product", type text}, {"Discount Band", type text}, {"Units Sold", type number}, {"Manufacturing Price", Int64.Type}, {"Sale Price", Int64.Type}, {"Gross Sales", type number}, {"Discounts", type number}, {" Sales", type number}, {"COGS", type number}, {"Profit", type number}, {"Date", type date}, {"Month Number", Int64.Type}, {"Month Name", type text}, {"Year", Int64.Type}}),
     #"Outras Colunas Removidas" = Table.SelectColumns(#"Tipo Alterado",{"Country"}),
@@ -165,7 +165,7 @@ O Código detalha as Etapas Aplicadas no Editor Power Query:
 
 ```powerquery
 let
-    Fonte = Excel.Workbook(File.Contents("D:\Projetos\Github\costandrad\DIO\universia-primeiros-passos-com-power-bi\05 - Modelagem de Dados com Power BI\Desafio de Projeto - Modelagem de dashboard de e-comerce\01-database\Financial Sample.xlsx"), null, true),
+    Fonte = Excel.Workbook(Web.Contents("https://github.com/costandrad/universia-primeiros-passos-com-power-bi/raw/refs/heads/main/05%20-%20Modelagem%20de%20Dados%20com%20Power%20BI/Desafio%20de%20Projeto%20-%20Modelagem%20de%20dashboard%20de%20e-comerce/01-database/Financial%20Sample.xlsx"), null, true),
     financials_Table = Fonte{[Item="financials",Kind="Table"]}[Data],
     #"Tipo Alterado" = Table.TransformColumnTypes(financials_Table,{{"Segment", type text}, {"Country", type text}, {"Product", type text}, {"Discount Band", type text}, {"Units Sold", type number}, {"Manufacturing Price", Int64.Type}, {"Sale Price", Int64.Type}, {"Gross Sales", type number}, {"Discounts", type number}, {" Sales", type number}, {"COGS", type number}, {"Profit", type number}, {"Date", type date}, {"Month Number", Int64.Type}, {"Month Name", type text}, {"Year", Int64.Type}}),
     #"Outras Colunas Removidas" = Table.SelectColumns(#"Tipo Alterado",{"Product", "Manufacturing Price"}),
@@ -201,7 +201,7 @@ O Código detalha as Etapas Aplicadas no Editor Power Query:
 
 ```powerquery
 let
-    Fonte = Excel.Workbook(File.Contents("D:\Projetos\Github\costandrad\DIO\universia-primeiros-passos-com-power-bi\05 - Modelagem de Dados com Power BI\Desafio de Projeto - Modelagem de dashboard de e-comerce\01-database\Financial Sample.xlsx"), null, true),
+    Fonte = Excel.Workbook(Web.Contents("https://github.com/costandrad/universia-primeiros-passos-com-power-bi/raw/refs/heads/main/05%20-%20Modelagem%20de%20Dados%20com%20Power%20BI/Desafio%20de%20Projeto%20-%20Modelagem%20de%20dashboard%20de%20e-comerce/01-database/Financial%20Sample.xlsx"), null, true),
     financials_Table = Fonte{[Item="financials",Kind="Table"]}[Data],
     #"Tipo Alterado" = Table.TransformColumnTypes(financials_Table,{{"Segment", type text}, {"Country", type text}, {"Product", type text}, {"Discount Band", type text}, {"Units Sold", type number}, {"Manufacturing Price", Int64.Type}, {"Sale Price", Int64.Type}, {"Gross Sales", type number}, {"Discounts", type number}, {" Sales", type number}, {"COGS", type number}, {"Profit", type number}, {"Date", type date}, {"Month Number", Int64.Type}, {"Month Name", type text}, {"Year", Int64.Type}}),
     #"Outras Colunas Removidas" = Table.SelectColumns(#"Tipo Alterado",{"Discount Band"}),
