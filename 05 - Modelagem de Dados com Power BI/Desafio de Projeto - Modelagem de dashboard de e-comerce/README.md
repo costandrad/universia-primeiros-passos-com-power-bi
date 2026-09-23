@@ -9,7 +9,7 @@
 ### Modelo de Esquema em Estrela (_Star Schema_)
 
 
-O Modelo de Esquema em Estrela (_Star Schema_) é um modelo de organização de banco de dados mais simples, cujo objetivo é organizar grandes conjuntos de dados de forma intuitiva e voltada para otimizar a Análise de Dados e _Business Intelligence_ ([^1]). O modelo requer uma tabela central, denomidada **tabela fato**, em torno da qual ficam conectadas  várias **tabelas dimensão**, daí o nome _Star Schema_ ([^2]).
+O Modelo de Esquema em Estrela (_Star Schema_) é um modelo de organização de banco de dados mais simples, cujo objetivo é organizar grandes conjuntos de dados de forma intuitiva e voltada para otimizar a Análise de Dados e _Business Intelligence_[^1]. O modelo requer uma tabela central, denomidada **tabela fato**, em torno da qual ficam conectadas  várias **tabelas dimensão**, daí o nome _Star Schema_[^2].
 
 #### Tabela de Fatos
 
@@ -104,7 +104,7 @@ in
 
 O resulado foi o seguinte:
 
-<div style="max-width: 300px; font-family: sans-serif; text-align: center">
+<div style="max-width: 240px; font-family: sans-serif; text-align: center">
   <figcaption>Tabela d_Segmento</figcaption>
   <img src="./02-assets/d_Segmento.png" alt="Design de modelo de esquema em estrel" style="width: 100%; border-radius: 4px;">
   <small style="display: block; text-align: left; color: #666; margin-top: 5px;">
